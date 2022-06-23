@@ -1,0 +1,48 @@
+-- Creating Shamazon DB Tables
+CREATE TABLE IF NOT EXISTS customer(
+    customer_id SERIAL PRIMARY KEY,
+    fist_name VARCHAR(45),
+    last_name VARCHAR(45),
+    address VARCHAR(100),
+    billing_info VARCHAR(30)
+);
+
+SELECT *
+FROM customer;
+
+CREATE TABLE IF NOT EXISTS vendor(
+    vendor_id SERIAL PRIMARY KEY,
+    contact_number VARCHAR(20),
+    vendor_name VARCHAR(45),
+    address VARCHAR(45)
+);
+
+CREATE TABLE IF NOT EXISTS product(
+    item_id SERIAL PRIMARY KEY,
+    amount NUMERIC(5,2),
+    product_name VARCHAR(45),
+    vendor_id INTEGER NOT NULL, -- NOT NULL CONSTAINT means this can't be emty
+    FOREIGN KEY(vendor_id) REFERENCES vendor(vendor_id)
+);
+
+CREATE TABLE IF NOT EXISTS order_(
+    order_id SERIAL PRIMARY KEY,
+    order_date DATE DEFAULT CURRENT_DATE,
+    sub_total NUMERIC(8,2),
+    total NUMERIC(10,2),
+    customer_id INTEGER NOT NULL,
+    FOREIGN KEY(customer_id) REFERENCES customer(customer_id)
+);
+
+CREATE TABLE IF NOT EXISTS order_detail(
+    order_detail_id SERIAL PRIMARY KEY,
+    quantity INTEGER,
+    item_id INTEGER,
+    order_id INTEGER NOT NULL,
+    FOREIGN KEY(item_id) REFERENCES product(item_id),
+    FOREIGN KEY(order_id) REFERENCES order_(order_id)
+);
+
+
+
+

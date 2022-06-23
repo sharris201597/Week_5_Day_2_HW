@@ -1,0 +1,68 @@
+
+
+-- List all customers wholive in Texas (use JOINS)
+SELECT customer_id, first_name, last_name, email, district
+FROM customer
+FULL JOIN address
+ON customer.address_id = address.address_id
+WHERE address.district = 'Texas'
+
+-- Get all payments above $6.99 with the Customer's Full Name
+SELECT first_name, last_name, amount
+FROM customer
+INNER JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE payment.amount > '6.99'
+
+-- Show all customers names who have made payments over 175$
+SELECT first_name, last_name, SUM(amount) AS total
+FROM customer 
+FULL JOIN payment
+ON customer.customer_id = payment.customer_id
+GROUP BY first_name, last_name, amount
+ORDER BY amount DESC;
+
+SELECT *
+FROM customer 
+FULL JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE first_name = 'Tara';
+
+
+-- List all customers that live in Nepal(use the city table)
+SELECT first_name, last_name, country
+FROM customer
+FULL JOIN address
+ON customer.address_id = address.address_id
+FULL JOIN city
+ON address.city_id = city.city_id
+FULL JOIN country
+ON city.country_id = country.country_id
+WHERE country = 'Nepal'
+
+-- 5. Which staff member had the most transactions?
+SELECT first_name, last_name, COUNT(rental.staff_id) AS number_of_sales
+FROM rental 
+INNER JOIN staff
+ON rental.staff_id = staff.staff_id
+GROUP BY first_name, last_name;
+
+
+-- 6. How many movies of each rating are there?
+??
+
+-- 7.Show all customers who have made a single payment above $6.99 (Use Subqueries)
+SELECT DISTINCT customer.customer_id, first_name, last_name, amount
+FROM customer
+INNER JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE amount > '6.99'
+ORDER BY amount;
+
+
+-- 8 How many free rentals did our stores give away?
+
+SELECT COUNT(*) AS free_rentals
+FROM payment
+WHERE amount = '0.00';
+
